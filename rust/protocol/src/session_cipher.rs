@@ -20,7 +20,7 @@ use rand::{CryptoRng, Rng};
 pub async fn message_encrypt(
     ptext: &[u8],
     remote_address: &ProtocolAddress,
-    session_store: &mut dyn SessionStore,
+    session_store: &mut impl SessionStore,
     identity_store: &mut dyn IdentityKeyStore,
     ctx: Option<Context>,
 ) -> Result<CiphertextMessage> {
@@ -128,7 +128,7 @@ pub async fn message_encrypt(
 pub async fn message_decrypt<R: Rng + CryptoRng>(
     ciphertext: &CiphertextMessage,
     remote_address: &ProtocolAddress,
-    session_store: &mut dyn SessionStore,
+    session_store: &mut impl SessionStore,
     identity_store: &mut dyn IdentityKeyStore,
     pre_key_store: &mut dyn PreKeyStore,
     signed_pre_key_store: &mut dyn SignedPreKeyStore,
@@ -169,7 +169,7 @@ pub async fn message_decrypt<R: Rng + CryptoRng>(
 pub async fn message_decrypt_prekey<R: Rng + CryptoRng>(
     ciphertext: &PreKeySignalMessage,
     remote_address: &ProtocolAddress,
-    session_store: &mut dyn SessionStore,
+    session_store: &mut impl SessionStore,
     identity_store: &mut dyn IdentityKeyStore,
     pre_key_store: &mut dyn PreKeyStore,
     signed_pre_key_store: &mut dyn SignedPreKeyStore,
@@ -232,7 +232,7 @@ pub async fn message_decrypt_prekey<R: Rng + CryptoRng>(
 pub async fn message_decrypt_signal<R: Rng + CryptoRng>(
     ciphertext: &SignalMessage,
     remote_address: &ProtocolAddress,
-    session_store: &mut dyn SessionStore,
+    session_store: &mut impl SessionStore,
     identity_store: &mut dyn IdentityKeyStore,
     csprng: &mut R,
     ctx: Option<Context>,

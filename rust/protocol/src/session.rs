@@ -121,7 +121,7 @@ async fn process_prekey_v3(
 
 pub async fn process_prekey_bundle<R: Rng + CryptoRng>(
     remote_address: &ProtocolAddress,
-    session_store: &mut dyn SessionStore,
+    session_store: &mut impl SessionStore,
     identity_store: &mut dyn IdentityKeyStore,
     bundle: &PreKeyBundle,
     mut csprng: &mut R,

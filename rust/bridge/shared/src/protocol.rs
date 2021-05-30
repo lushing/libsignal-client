@@ -963,7 +963,7 @@ fn SessionRecord_InitializeBobSession(
 async fn SessionBuilder_ProcessPreKeyBundle(
     bundle: &PreKeyBundle,
     protocol_address: &ProtocolAddress,
-    session_store: &mut dyn SessionStore,
+    session_store: &mut impl SessionStore,
     identity_key_store: &mut dyn IdentityKeyStore,
     ctx: Option<Context>,
 ) -> Result<()> {
@@ -983,7 +983,7 @@ async fn SessionBuilder_ProcessPreKeyBundle(
 async fn SessionCipher_EncryptMessage(
     ptext: &[u8],
     protocol_address: &ProtocolAddress,
-    session_store: &mut dyn SessionStore,
+    session_store: &mut impl SessionStore,
     identity_key_store: &mut dyn IdentityKeyStore,
     ctx: Option<Context>,
 ) -> Result<CiphertextMessage> {
@@ -1002,7 +1002,7 @@ async fn SessionCipher_DecryptSignalMessage<E: Env>(
     env: E,
     message: &SignalMessage,
     protocol_address: &ProtocolAddress,
-    session_store: &mut dyn SessionStore,
+    session_store: &mut impl SessionStore,
     identity_key_store: &mut dyn IdentityKeyStore,
     ctx: Option<Context>,
 ) -> Result<E::Buffer> {
@@ -1024,7 +1024,7 @@ async fn SessionCipher_DecryptPreKeySignalMessage<E: Env>(
     env: E,
     message: &PreKeySignalMessage,
     protocol_address: &ProtocolAddress,
-    session_store: &mut dyn SessionStore,
+    session_store: &mut impl SessionStore,
     identity_key_store: &mut dyn IdentityKeyStore,
     prekey_store: &mut dyn PreKeyStore,
     signed_prekey_store: &mut dyn SignedPreKeyStore,
@@ -1134,7 +1134,7 @@ async fn SealedSender_DecryptMessage(
     local_e164: Option<String>,
     local_uuid: String,
     local_device_id: u32,
-    session_store: &mut dyn SessionStore,
+    session_store: &mut impl SessionStore,
     identity_store: &mut dyn IdentityKeyStore,
     prekey_store: &mut dyn PreKeyStore,
     signed_prekey_store: &mut dyn SignedPreKeyStore,
