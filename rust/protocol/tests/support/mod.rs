@@ -52,7 +52,7 @@ pub async fn decrypt(
 
 #[allow(dead_code, clippy::eval_order_dependence)]
 pub async fn create_pre_key_bundle<R: Rng + CryptoRng>(
-    store: &mut dyn ProtocolStore,
+    store: &mut impl ProtocolStore,
     mut csprng: &mut R,
 ) -> Result<PreKeyBundle, SignalProtocolError> {
     let pre_key_pair = KeyPair::generate(&mut csprng);

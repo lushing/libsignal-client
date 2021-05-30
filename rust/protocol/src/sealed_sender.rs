@@ -685,7 +685,7 @@ pub async fn sealed_sender_encrypt<R: Rng + CryptoRng>(
     sender_cert: &SenderCertificate,
     ptext: &[u8],
     session_store: &mut impl SessionStore,
-    identity_store: &mut dyn IdentityKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
     ctx: Option<Context>,
     rng: &mut R,
 ) -> Result<Vec<u8>> {
@@ -703,7 +703,7 @@ pub async fn sealed_sender_encrypt<R: Rng + CryptoRng>(
 pub async fn sealed_sender_encrypt_from_usmc<R: Rng + CryptoRng>(
     destination: &ProtocolAddress,
     usmc: &UnidentifiedSenderMessageContent,
-    identity_store: &mut dyn IdentityKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
     ctx: Option<Context>,
     rng: &mut R,
 ) -> Result<Vec<u8>> {
@@ -874,7 +874,7 @@ pub async fn sealed_sender_multi_recipient_encrypt<R: Rng + CryptoRng>(
     destinations: &[&ProtocolAddress],
     destination_sessions: &[&SessionRecord],
     usmc: &UnidentifiedSenderMessageContent,
-    identity_store: &mut dyn IdentityKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
     ctx: Option<Context>,
     rng: &mut R,
 ) -> Result<Vec<u8>> {
@@ -1019,7 +1019,7 @@ pub fn sealed_sender_multi_recipient_fan_out(data: &[u8]) -> Result<Vec<Vec<u8>>
 
 pub async fn sealed_sender_decrypt_to_usmc(
     ciphertext: &[u8],
-    identity_store: &mut dyn IdentityKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
     ctx: Option<Context>,
 ) -> Result<UnidentifiedSenderMessageContent> {
     let our_identity = identity_store.get_identity_key_pair(ctx).await?;
@@ -1159,10 +1159,10 @@ pub async fn sealed_sender_decrypt(
     local_e164: Option<String>,
     local_uuid: String,
     local_device_id: u32,
-    identity_store: &mut dyn IdentityKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
     session_store: &mut impl SessionStore,
-    pre_key_store: &mut dyn PreKeyStore,
-    signed_pre_key_store: &mut dyn SignedPreKeyStore,
+    pre_key_store: &mut impl PreKeyStore,
+    signed_pre_key_store: &mut impl SignedPreKeyStore,
     ctx: Option<Context>,
 ) -> Result<SealedSenderDecryptionResult> {
     let usmc = sealed_sender_decrypt_to_usmc(ciphertext, identity_store, ctx).await?;

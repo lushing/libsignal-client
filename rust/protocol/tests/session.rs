@@ -1110,9 +1110,9 @@ async fn run_interaction(
 
 #[allow(clippy::eval_order_dependence)]
 async fn is_session_id_equal(
-    alice_store: &dyn ProtocolStore,
+    alice_store: &impl ProtocolStore,
     alice_address: &ProtocolAddress,
-    bob_store: &dyn ProtocolStore,
+    bob_store: &impl ProtocolStore,
     bob_address: &ProtocolAddress,
 ) -> Result<bool, SignalProtocolError> {
     Ok(alice_store

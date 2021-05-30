@@ -26,9 +26,9 @@ pub async fn process_prekey(
     message: &PreKeySignalMessage,
     remote_address: &ProtocolAddress,
     session_record: &mut SessionRecord,
-    identity_store: &mut dyn IdentityKeyStore,
-    pre_key_store: &mut dyn PreKeyStore,
-    signed_prekey_store: &mut dyn SignedPreKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
+    pre_key_store: &mut impl PreKeyStore,
+    signed_prekey_store: &mut impl SignedPreKeyStore,
     ctx: Option<Context>,
 ) -> Result<Option<PreKeyId>> {
     let their_identity_key = message.identity_key();
@@ -67,9 +67,9 @@ pub async fn process_prekey(
 async fn process_prekey_v3(
     message: &PreKeySignalMessage,
     session_record: &mut SessionRecord,
-    signed_prekey_store: &mut dyn SignedPreKeyStore,
-    pre_key_store: &mut dyn PreKeyStore,
-    identity_store: &mut dyn IdentityKeyStore,
+    signed_prekey_store: &mut impl SignedPreKeyStore,
+    pre_key_store: &mut impl PreKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
     ctx: Option<Context>,
 ) -> Result<Option<PreKeyId>> {
     if session_record.has_session_state(
@@ -122,7 +122,7 @@ async fn process_prekey_v3(
 pub async fn process_prekey_bundle<R: Rng + CryptoRng>(
     remote_address: &ProtocolAddress,
     session_store: &mut impl SessionStore,
-    identity_store: &mut dyn IdentityKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
     bundle: &PreKeyBundle,
     mut csprng: &mut R,
     ctx: Option<Context>,

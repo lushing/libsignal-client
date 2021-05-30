@@ -19,7 +19,7 @@ use std::convert::TryFrom;
 use uuid::Uuid;
 
 pub async fn group_encrypt<R: Rng + CryptoRng>(
-    sender_key_store: &mut dyn SenderKeyStore,
+    sender_key_store: &mut impl SenderKeyStore,
     sender: &ProtocolAddress,
     distribution_id: Uuid,
     plaintext: &[u8],
@@ -109,7 +109,7 @@ fn get_sender_key(
 
 pub async fn group_decrypt(
     skm_bytes: &[u8],
-    sender_key_store: &mut dyn SenderKeyStore,
+    sender_key_store: &mut impl SenderKeyStore,
     sender: &ProtocolAddress,
     ctx: Option<Context>,
 ) -> Result<Vec<u8>> {
@@ -156,7 +156,7 @@ pub async fn group_decrypt(
 pub async fn process_sender_key_distribution_message(
     sender: &ProtocolAddress,
     skdm: &SenderKeyDistributionMessage,
-    sender_key_store: &mut dyn SenderKeyStore,
+    sender_key_store: &mut impl SenderKeyStore,
     ctx: Option<Context>,
 ) -> Result<()> {
     let distribution_id = skdm.distribution_id()?;
@@ -189,7 +189,7 @@ pub async fn process_sender_key_distribution_message(
 pub async fn create_sender_key_distribution_message<R: Rng + CryptoRng>(
     sender: &ProtocolAddress,
     distribution_id: Uuid,
-    sender_key_store: &mut dyn SenderKeyStore,
+    sender_key_store: &mut impl SenderKeyStore,
     csprng: &mut R,
     ctx: Option<Context>,
 ) -> Result<SenderKeyDistributionMessage> {

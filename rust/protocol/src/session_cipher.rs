@@ -21,7 +21,7 @@ pub async fn message_encrypt(
     ptext: &[u8],
     remote_address: &ProtocolAddress,
     session_store: &mut impl SessionStore,
-    identity_store: &mut dyn IdentityKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
     ctx: Option<Context>,
 ) -> Result<CiphertextMessage> {
     let mut session_record = session_store
@@ -129,9 +129,9 @@ pub async fn message_decrypt<R: Rng + CryptoRng>(
     ciphertext: &CiphertextMessage,
     remote_address: &ProtocolAddress,
     session_store: &mut impl SessionStore,
-    identity_store: &mut dyn IdentityKeyStore,
-    pre_key_store: &mut dyn PreKeyStore,
-    signed_pre_key_store: &mut dyn SignedPreKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
+    pre_key_store: &mut impl PreKeyStore,
+    signed_pre_key_store: &mut impl SignedPreKeyStore,
     csprng: &mut R,
     ctx: Option<Context>,
 ) -> Result<Vec<u8>> {
@@ -170,9 +170,9 @@ pub async fn message_decrypt_prekey<R: Rng + CryptoRng>(
     ciphertext: &PreKeySignalMessage,
     remote_address: &ProtocolAddress,
     session_store: &mut impl SessionStore,
-    identity_store: &mut dyn IdentityKeyStore,
-    pre_key_store: &mut dyn PreKeyStore,
-    signed_pre_key_store: &mut dyn SignedPreKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
+    pre_key_store: &mut impl PreKeyStore,
+    signed_pre_key_store: &mut impl SignedPreKeyStore,
     csprng: &mut R,
     ctx: Option<Context>,
 ) -> Result<Vec<u8>> {
@@ -233,7 +233,7 @@ pub async fn message_decrypt_signal<R: Rng + CryptoRng>(
     ciphertext: &SignalMessage,
     remote_address: &ProtocolAddress,
     session_store: &mut impl SessionStore,
-    identity_store: &mut dyn IdentityKeyStore,
+    identity_store: &mut impl IdentityKeyStore,
     csprng: &mut R,
     ctx: Option<Context>,
 ) -> Result<Vec<u8>> {
