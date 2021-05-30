@@ -965,7 +965,7 @@ async fn SessionBuilder_ProcessPreKeyBundle(
     protocol_address: &ProtocolAddress,
     session_store: &mut dyn SessionStore,
     identity_key_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<()> {
     let mut csprng = rand::rngs::OsRng;
     process_prekey_bundle(
@@ -985,7 +985,7 @@ async fn SessionCipher_EncryptMessage(
     protocol_address: &ProtocolAddress,
     session_store: &mut dyn SessionStore,
     identity_key_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<CiphertextMessage> {
     message_encrypt(
         ptext,
@@ -1004,7 +1004,7 @@ async fn SessionCipher_DecryptSignalMessage<E: Env>(
     protocol_address: &ProtocolAddress,
     session_store: &mut dyn SessionStore,
     identity_key_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<E::Buffer> {
     let mut csprng = rand::rngs::OsRng;
     let ptext = message_decrypt_signal(
@@ -1028,7 +1028,7 @@ async fn SessionCipher_DecryptPreKeySignalMessage<E: Env>(
     identity_key_store: &mut dyn IdentityKeyStore,
     prekey_store: &mut dyn PreKeyStore,
     signed_prekey_store: &mut dyn SignedPreKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<E::Buffer> {
     let mut csprng = rand::rngs::OsRng;
     let ptext = message_decrypt_prekey(
@@ -1051,7 +1051,7 @@ async fn SealedSessionCipher_Encrypt<E: Env>(
     destination: &ProtocolAddress,
     content: &UnidentifiedSenderMessageContent,
     identity_key_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<E::Buffer> {
     let mut rng = rand::rngs::OsRng;
     let ctext =
@@ -1067,7 +1067,7 @@ async fn SealedSender_MultiRecipientEncrypt<E: Env>(
     recipient_sessions: &[&SessionRecord],
     content: &UnidentifiedSenderMessageContent,
     identity_key_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<E::Buffer> {
     let mut rng = rand::rngs::OsRng;
     let ctext = sealed_sender_multi_recipient_encrypt(
@@ -1090,7 +1090,7 @@ async fn SealedSender_MultiRecipientEncryptNode<E: Env>(
     recipient_sessions: &[SessionRecord],
     content: &UnidentifiedSenderMessageContent,
     identity_key_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<E::Buffer> {
     let mut rng = rand::rngs::OsRng;
     let ctext = sealed_sender_multi_recipient_encrypt(
@@ -1120,7 +1120,7 @@ fn SealedSender_MultiRecipientMessageForSingleRecipient<E: Env>(
 async fn SealedSessionCipher_DecryptToUsmc(
     ctext: &[u8],
     identity_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<UnidentifiedSenderMessageContent> {
     sealed_sender_decrypt_to_usmc(ctext, identity_store, ctx).await
 }
@@ -1160,7 +1160,7 @@ async fn SenderKeyDistributionMessage_Create(
     sender: &ProtocolAddress,
     distribution_id: Uuid,
     store: &mut dyn SenderKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<SenderKeyDistributionMessage> {
     let mut csprng = rand::rngs::OsRng;
     create_sender_key_distribution_message(sender, distribution_id, store, &mut csprng, ctx).await
@@ -1174,7 +1174,7 @@ async fn SenderKeyDistributionMessage_Process(
     sender: &ProtocolAddress,
     sender_key_distribution_message: &SenderKeyDistributionMessage,
     store: &mut dyn SenderKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<()> {
     process_sender_key_distribution_message(sender, sender_key_distribution_message, store, ctx)
         .await
@@ -1186,7 +1186,7 @@ async fn GroupCipher_EncryptMessage(
     distribution_id: Uuid,
     message: &[u8],
     store: &mut dyn SenderKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<CiphertextMessage> {
     let mut rng = rand::rngs::OsRng;
     let ctext = group_encrypt(store, sender, distribution_id, message, &mut rng, ctx).await?;
@@ -1199,7 +1199,7 @@ async fn GroupCipher_DecryptMessage<E: Env>(
     sender: &ProtocolAddress,
     message: &[u8],
     store: &mut dyn SenderKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<E::Buffer> {
     let ptext = group_decrypt(message, store, sender, ctx).await?;
     Ok(env.buffer(ptext))

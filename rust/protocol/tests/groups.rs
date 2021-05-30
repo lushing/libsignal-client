@@ -39,11 +39,11 @@ fn group_no_send_session() -> Result<(), SignalProtocolError> {
 
 pub struct ContextUsingSenderKeyStore {
     store: InMemSenderKeyStore,
-    expected_context: Context,
+    expected_context: Option<Context>,
 }
 
 impl ContextUsingSenderKeyStore {
-    pub fn new(expected_context: Context) -> Self {
+    pub fn new(expected_context: Option<Context>) -> Self {
         Self {
             store: InMemSenderKeyStore::new(),
             expected_context,
@@ -58,7 +58,7 @@ impl SenderKeyStore for ContextUsingSenderKeyStore {
         sender: &ProtocolAddress,
         distribution_id: Uuid,
         record: &SenderKeyRecord,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<(), SignalProtocolError> {
         assert_eq!(ctx, self.expected_context);
         self.store
@@ -70,7 +70,7 @@ impl SenderKeyStore for ContextUsingSenderKeyStore {
         &mut self,
         sender: &ProtocolAddress,
         distribution_id: Uuid,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<Option<SenderKeyRecord>, SignalProtocolError> {
         assert_eq!(ctx, self.expected_context);
         self.store
@@ -89,7 +89,7 @@ fn group_using_context_arg() -> Result<(), SignalProtocolError> {
 
         let x = Box::new(1);
 
-        let context = Some(Box::into_raw(x) as _);
+        let context = Some(Context::new(Box::into_raw(x) as _));
 
         let mut alice_store = ContextUsingSenderKeyStore::new(context);
 

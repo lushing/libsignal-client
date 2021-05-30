@@ -686,7 +686,7 @@ pub async fn sealed_sender_encrypt<R: Rng + CryptoRng>(
     ptext: &[u8],
     session_store: &mut dyn SessionStore,
     identity_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
     rng: &mut R,
 ) -> Result<Vec<u8>> {
     let message = message_encrypt(ptext, destination, session_store, identity_store, ctx).await?;
@@ -704,7 +704,7 @@ pub async fn sealed_sender_encrypt_from_usmc<R: Rng + CryptoRng>(
     destination: &ProtocolAddress,
     usmc: &UnidentifiedSenderMessageContent,
     identity_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
     rng: &mut R,
 ) -> Result<Vec<u8>> {
     let our_identity = identity_store.get_identity_key_pair(ctx).await?;
@@ -875,7 +875,7 @@ pub async fn sealed_sender_multi_recipient_encrypt<R: Rng + CryptoRng>(
     destination_sessions: &[&SessionRecord],
     usmc: &UnidentifiedSenderMessageContent,
     identity_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
     rng: &mut R,
 ) -> Result<Vec<u8>> {
     if destinations.len() != destination_sessions.len() {
@@ -1020,7 +1020,7 @@ pub fn sealed_sender_multi_recipient_fan_out(data: &[u8]) -> Result<Vec<Vec<u8>>
 pub async fn sealed_sender_decrypt_to_usmc(
     ciphertext: &[u8],
     identity_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<UnidentifiedSenderMessageContent> {
     let our_identity = identity_store.get_identity_key_pair(ctx).await?;
 
@@ -1163,7 +1163,7 @@ pub async fn sealed_sender_decrypt(
     session_store: &mut dyn SessionStore,
     pre_key_store: &mut dyn PreKeyStore,
     signed_pre_key_store: &mut dyn SignedPreKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<SealedSenderDecryptionResult> {
     let usmc = sealed_sender_decrypt_to_usmc(ciphertext, identity_store, ctx).await?;
 

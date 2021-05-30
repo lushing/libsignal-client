@@ -24,7 +24,7 @@ pub async fn group_encrypt<R: Rng + CryptoRng>(
     distribution_id: Uuid,
     plaintext: &[u8],
     csprng: &mut R,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<SenderKeyMessage> {
     let mut record = sender_key_store
         .load_sender_key(sender, distribution_id, ctx)
@@ -111,7 +111,7 @@ pub async fn group_decrypt(
     skm_bytes: &[u8],
     sender_key_store: &mut dyn SenderKeyStore,
     sender: &ProtocolAddress,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<Vec<u8>> {
     let skm = SenderKeyMessage::try_from(skm_bytes)?;
     let mut record = sender_key_store
@@ -157,7 +157,7 @@ pub async fn process_sender_key_distribution_message(
     sender: &ProtocolAddress,
     skdm: &SenderKeyDistributionMessage,
     sender_key_store: &mut dyn SenderKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<()> {
     let distribution_id = skdm.distribution_id()?;
     log::info!(
@@ -191,7 +191,7 @@ pub async fn create_sender_key_distribution_message<R: Rng + CryptoRng>(
     distribution_id: Uuid,
     sender_key_store: &mut dyn SenderKeyStore,
     csprng: &mut R,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<SenderKeyDistributionMessage> {
     let mut sender_key_record = sender_key_store
         .load_sender_key(sender, distribution_id, ctx)

@@ -22,7 +22,7 @@ pub async fn message_encrypt(
     remote_address: &ProtocolAddress,
     session_store: &mut dyn SessionStore,
     identity_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<CiphertextMessage> {
     let mut session_record = session_store
         .load_session(&remote_address, ctx)
@@ -133,7 +133,7 @@ pub async fn message_decrypt<R: Rng + CryptoRng>(
     pre_key_store: &mut dyn PreKeyStore,
     signed_pre_key_store: &mut dyn SignedPreKeyStore,
     csprng: &mut R,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<Vec<u8>> {
     match ciphertext {
         CiphertextMessage::SignalMessage(m) => {
@@ -174,7 +174,7 @@ pub async fn message_decrypt_prekey<R: Rng + CryptoRng>(
     pre_key_store: &mut dyn PreKeyStore,
     signed_pre_key_store: &mut dyn SignedPreKeyStore,
     csprng: &mut R,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<Vec<u8>> {
     let mut session_record = session_store
         .load_session(&remote_address, ctx)
@@ -235,7 +235,7 @@ pub async fn message_decrypt_signal<R: Rng + CryptoRng>(
     session_store: &mut dyn SessionStore,
     identity_store: &mut dyn IdentityKeyStore,
     csprng: &mut R,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<Vec<u8>> {
     let mut session_record = session_store
         .load_session(&remote_address, ctx)

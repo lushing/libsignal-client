@@ -29,7 +29,7 @@ pub async fn process_prekey(
     identity_store: &mut dyn IdentityKeyStore,
     pre_key_store: &mut dyn PreKeyStore,
     signed_prekey_store: &mut dyn SignedPreKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<Option<PreKeyId>> {
     let their_identity_key = message.identity_key();
 
@@ -70,7 +70,7 @@ async fn process_prekey_v3(
     signed_prekey_store: &mut dyn SignedPreKeyStore,
     pre_key_store: &mut dyn PreKeyStore,
     identity_store: &mut dyn IdentityKeyStore,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<Option<PreKeyId>> {
     if session_record.has_session_state(
         message.message_version() as u32,
@@ -125,7 +125,7 @@ pub async fn process_prekey_bundle<R: Rng + CryptoRng>(
     identity_store: &mut dyn IdentityKeyStore,
     bundle: &PreKeyBundle,
     mut csprng: &mut R,
-    ctx: Context,
+    ctx: Option<Context>,
 ) -> Result<()> {
     let their_identity_key = bundle.identity_key()?;
 

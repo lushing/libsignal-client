@@ -54,7 +54,7 @@ pub struct FfiIdentityKeyStoreStruct {
 impl IdentityKeyStore for &FfiIdentityKeyStoreStruct {
     async fn get_identity_key_pair(
         &self,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<IdentityKeyPair, SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let mut key = std::ptr::null_mut();
@@ -77,7 +77,7 @@ impl IdentityKeyStore for &FfiIdentityKeyStoreStruct {
         Ok(IdentityKeyPair::new(IdentityKey::new(pub_key), *priv_key))
     }
 
-    async fn get_local_registration_id(&self, ctx: Context) -> Result<u32, SignalProtocolError> {
+    async fn get_local_registration_id(&self, ctx: Option<Context>) -> Result<u32, SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let mut id = 0;
         let result = (self.get_local_registration_id)(self.ctx, &mut id, ctx);
@@ -96,7 +96,7 @@ impl IdentityKeyStore for &FfiIdentityKeyStoreStruct {
         &mut self,
         address: &ProtocolAddress,
         identity: &IdentityKey,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<bool, SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let result = (self.save_identity)(self.ctx, &*address, &*identity.public_key(), ctx);
@@ -116,7 +116,7 @@ impl IdentityKeyStore for &FfiIdentityKeyStoreStruct {
         address: &ProtocolAddress,
         identity: &IdentityKey,
         direction: Direction,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<bool, SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let direction = match direction {
@@ -144,7 +144,7 @@ impl IdentityKeyStore for &FfiIdentityKeyStoreStruct {
     async fn get_identity(
         &self,
         address: &ProtocolAddress,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<Option<IdentityKey>, SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let mut key = std::ptr::null_mut();
@@ -195,7 +195,7 @@ impl PreKeyStore for &FfiPreKeyStoreStruct {
     async fn get_pre_key(
         &self,
         prekey_id: u32,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<PreKeyRecord, SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let mut record = std::ptr::null_mut();
@@ -220,7 +220,7 @@ impl PreKeyStore for &FfiPreKeyStoreStruct {
         &mut self,
         prekey_id: u32,
         record: &PreKeyRecord,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<(), SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let result = (self.store_pre_key)(self.ctx, prekey_id, &*record, ctx);
@@ -238,7 +238,7 @@ impl PreKeyStore for &FfiPreKeyStoreStruct {
     async fn remove_pre_key(
         &mut self,
         prekey_id: u32,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<(), SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let result = (self.remove_pre_key)(self.ctx, prekey_id, ctx);
@@ -280,7 +280,7 @@ impl SignedPreKeyStore for &FfiSignedPreKeyStoreStruct {
     async fn get_signed_pre_key(
         &self,
         prekey_id: u32,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<SignedPreKeyRecord, SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let mut record = std::ptr::null_mut();
@@ -306,7 +306,7 @@ impl SignedPreKeyStore for &FfiSignedPreKeyStoreStruct {
         &mut self,
         prekey_id: u32,
         record: &SignedPreKeyRecord,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<(), SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let result = (self.store_signed_pre_key)(self.ctx, prekey_id, &*record, ctx);
@@ -348,7 +348,7 @@ impl SessionStore for &FfiSessionStoreStruct {
     async fn load_session(
         &self,
         address: &ProtocolAddress,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<Option<SessionRecord>, SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let mut record = std::ptr::null_mut();
@@ -374,7 +374,7 @@ impl SessionStore for &FfiSessionStoreStruct {
         &mut self,
         address: &ProtocolAddress,
         record: &SessionRecord,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<(), SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let result = (self.store_session)(self.ctx, &*address, &*record, ctx);
@@ -420,7 +420,7 @@ impl SenderKeyStore for &FfiSenderKeyStoreStruct {
         sender: &ProtocolAddress,
         distribution_id: Uuid,
         record: &SenderKeyRecord,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<(), SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let result = (self.store_sender_key)(
@@ -445,7 +445,7 @@ impl SenderKeyStore for &FfiSenderKeyStoreStruct {
         &mut self,
         sender: &ProtocolAddress,
         distribution_id: Uuid,
-        ctx: Context,
+        ctx: Option<Context>,
     ) -> Result<Option<SenderKeyRecord>, SignalProtocolError> {
         let ctx = ctx.unwrap_or(std::ptr::null_mut());
         let mut record = std::ptr::null_mut();
