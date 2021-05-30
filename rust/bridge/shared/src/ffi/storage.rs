@@ -50,7 +50,7 @@ pub struct FfiIdentityKeyStoreStruct {
     is_trusted_identity: IsTrustedIdentity,
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl IdentityKeyStore for &FfiIdentityKeyStoreStruct {
     async fn get_identity_key_pair(
         &self,
@@ -190,7 +190,7 @@ pub struct FfiPreKeyStoreStruct {
     remove_pre_key: RemovePreKey,
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl PreKeyStore for &FfiPreKeyStoreStruct {
     async fn get_pre_key(
         &self,
@@ -275,7 +275,7 @@ pub struct FfiSignedPreKeyStoreStruct {
     store_signed_pre_key: StoreSignedPreKey,
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl SignedPreKeyStore for &FfiSignedPreKeyStoreStruct {
     async fn get_signed_pre_key(
         &self,
@@ -343,7 +343,7 @@ pub struct FfiSessionStoreStruct {
     store_session: StoreSession,
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl SessionStore for &FfiSessionStoreStruct {
     async fn load_session(
         &self,
@@ -413,7 +413,7 @@ pub struct FfiSenderKeyStoreStruct {
     store_sender_key: StoreSenderKey,
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl SenderKeyStore for &FfiSenderKeyStoreStruct {
     async fn store_sender_key(
         &mut self,

@@ -51,7 +51,7 @@ impl ContextUsingSenderKeyStore {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl SenderKeyStore for ContextUsingSenderKeyStore {
     async fn store_sender_key(
         &mut self,

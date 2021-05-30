@@ -35,7 +35,7 @@ pub enum Direction {
     Receiving,
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 pub trait IdentityKeyStore {
     async fn get_identity_key_pair(&self, ctx: Option<Context>) -> Result<IdentityKeyPair>;
 
@@ -63,7 +63,7 @@ pub trait IdentityKeyStore {
     ) -> Result<Option<IdentityKey>>;
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 pub trait PreKeyStore {
     async fn get_pre_key(&self, prekey_id: PreKeyId, ctx: Option<Context>) -> Result<PreKeyRecord>;
 
@@ -77,7 +77,7 @@ pub trait PreKeyStore {
     async fn remove_pre_key(&mut self, prekey_id: PreKeyId, ctx: Option<Context>) -> Result<()>;
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 pub trait SignedPreKeyStore {
     async fn get_signed_pre_key(
         &self,
@@ -93,7 +93,7 @@ pub trait SignedPreKeyStore {
     ) -> Result<()>;
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 pub trait SessionStore {
     async fn load_session(
         &self,
@@ -109,7 +109,7 @@ pub trait SessionStore {
     ) -> Result<()>;
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 pub trait SenderKeyStore {
     async fn store_sender_key(
         &mut self,

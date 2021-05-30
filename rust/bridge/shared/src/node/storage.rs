@@ -101,7 +101,7 @@ impl Finalize for NodePreKeyStore {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl PreKeyStore for NodePreKeyStore {
     async fn get_pre_key(
         &self,
@@ -211,7 +211,7 @@ impl Finalize for NodeSignedPreKeyStore {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl SignedPreKeyStore for NodeSignedPreKeyStore {
     async fn get_signed_pre_key(
         &self,
@@ -317,7 +317,7 @@ impl Finalize for NodeSessionStore {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl SessionStore for NodeSessionStore {
     async fn load_session(
         &self,
@@ -499,7 +499,7 @@ impl Finalize for NodeIdentityKeyStore {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl IdentityKeyStore for NodeIdentityKeyStore {
     async fn get_identity_key_pair(
         &self,
@@ -652,7 +652,7 @@ impl Finalize for NodeSenderKeyStore {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl SenderKeyStore for NodeSenderKeyStore {
     async fn load_sender_key(
         &mut self,
